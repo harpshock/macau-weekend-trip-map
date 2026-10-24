@@ -246,7 +246,7 @@ const DAYS = [
     id: 1,
     label: 'D1',
     date: '10月24日 周六 · 07:00 坪环发车',
-    title: '澳门半岛南线 · 平价本地味与夜景',
+    title: '澳门半岛南线 · 平价本地味与老城夜游',
     color: '#ff9500',
     locations: [
       {
@@ -309,76 +309,96 @@ const DAYS = [
         gmap: 'Chapel+of+Our+Lady+of+Penha+Macau'
       },
       {
-        name: '妈阁 → 望德堂坊', lat: 22.1861086, lng: 113.5312671,
+        name: '妈阁 → 白鸽巢公园', lat: 22.1861086, lng: 113.5312671,
         type: 'transport', time: '14:00',
-        desc: '从妈阁总站乘 18 路往牧场街方向，至“连胜／镜湖医院”附近下车。',
+        desc: '从妈阁总站乘 18 路往牧场街方向，至白鸽巢前地附近下车。',
         budget: 'MOP 6',
-        detail: '18路适合把半岛南线和望德堂、新桥一带串起来。\n上车前看车头“牧场街”方向，别坐反。',
+        detail: '18路把妈阁、内港老街和新桥一带串起来。\n上车前看车头“牧场街”方向，别坐反。',
         pay: { cash: 1, alipay: 0.5, wechat: 0.5 }
       },
       {
-        name: '望德堂坊 / 塔石街巷', lat: 22.1973272, lng: 113.5453660,
+        name: '白鸽巢公园 / 东方基金会', lat: 22.2007550, lng: 113.5392153,
         type: 'spot', time: '14:30',
-        desc: '葡式老屋、文创小店和安静的坡道，慢慢走 60–75 分钟。',
+        desc: '旧城里的树荫公园和葡式花园，白天放松约 45 分钟。',
         budget: '免费',
-        detail: '先从望德圣母堂一带进入，再走到塔石广场。\n这里不是大三巴区域的重复游览，重点放在居民街区和建筑细节。',
-        gmap: 'St+Lazarus+Church+Macau'
+        detail: '白鸽巢公园与东方基金会会址相邻，既有老树也有葡式建筑。\n这一段把下午的节奏放慢，也为晚上连续步行保留体力。',
+        gmap: 'Camoes+Garden+Macau'
       },
       {
         name: '雄兴泰咖啡室', lat: 22.2046893, lng: 113.5456527,
-        type: 'food', time: '16:10',
+        type: 'food', time: '16:00',
         desc: '提前吃一顿便宜晚餐，鸡汤濑粉、鱼饼和豉油皇炒面都适合。',
         budget: '约 MOP 40–70/人',
-        detail: '连胜马路151号B，传统本地茶餐厅，评价重点是鸡汤濑粉、鲮鱼饼/墨鱼饼。\n目前营业时间约07:00–18:00，所以安排在16:10吃，不能当成深夜收尾。\n饭后步行到高士德/连胜一带乘9A去澳门塔。',
+        detail: '连胜马路151号B，传统本地茶餐厅，评价重点是鸡汤濑粉、鲮鱼饼/墨鱼饼。\n目前营业时间约07:00–18:00，所以安排在16:00吃，不能当成深夜收尾。',
         pay: { cash: 1, alipay: 0.5 },
         xhsKeyword: '雄兴泰咖啡室 连胜马路',
         dianpingKeyword: '雄兴泰咖啡室 澳门',
         gmap: 'Xiong+Xing+Tai+Cafe+Macau'
       },
       {
-        name: '9A → 澳门旅游塔', lat: 22.2046893, lng: 113.5456527,
-        type: 'transport', time: '17:10',
-        desc: '步行到高士德/连胜站，乘9A去澳门旅游塔，约20分钟。',
-        budget: 'MOP 6',
-        detail: '9A在旅游塔后继续绕回台山街市、牧场街和青茂，晚上回酒店仍坐9A。',
-        pay: { cash: 1, alipay: 0.5, wechat: 0.5 }
-      },
-      {
-        name: '西湾湖 · 澳门塔夜景', lat: 22.1798001, lng: 113.5367959,
-        type: 'spot', time: '17:35',
-        desc: '免费看日落后的“两湖一塔”：湖面灯影、澳门塔和半岛楼群。',
+        name: '恋爱巷', lat: 22.1971608, lng: 113.5404425,
+        type: 'spot', time: '17:10',
+        desc: '从雄兴泰步行约20分钟进入老城，先走恋爱巷。',
         budget: '免费',
-        detail: '这里才是通常所说的“澳门半岛经典夜景”，不是路氹酒店灯光。\n拍照机位：旅游塔前地、西湾湖广场、南湾湖岸边。18:10后楼体灯光更完整。',
-        gmap: 'Macau+Tower+Waterfront'
+        detail: '恋爱巷很短，重点是黄、红、绿色旧建筑夹出的透视和大三巴侧影。\n先看蓝调时刻，再进大三巴前地；不要站在车道中间拍照。',
+        gmap: 'Travessa+da+Paixao+Macau',
+        xhsKeyword: '澳门 恋爱巷 夜晚 暖黄'
       },
       {
-        name: '澳门旅游塔观光层（可选）', lat: 22.1798001, lng: 113.5367959,
-        type: 'spot', time: '—',
-        desc: '想从223米看360度夜景再上塔；只看湖边免费景就不进。',
-        budget: '门票另计',
-        detail: '官方观光层开放10:00–20:00，最后入场19:30。\n10月24日没有烟花特别安排；如果18:20前到塔下且愿意买票，可玩到19:20左右。',
-        gmap: 'Macau+Tower+Observation+Deck'
-      },
-      {
-        name: '南湾湖灯光慢走', lat: 22.1863375, lng: 113.5420811,
-        type: 'spot', time: '18:35',
-        desc: '沿西湾湖到南湾湖慢走，拍湖面倒影和新葡京、旅游塔方向灯色。',
+        name: '大三巴牌坊 · 夜灯', lat: 22.1974570, lng: 113.5408602,
+        type: 'spot', time: '17:40',
+        desc: '你上次已经去过，这次专门看入夜后的暖色灯和安静街巷。',
         budget: '免费',
-        detail: '如果只想免费夜景，这一段就是当天终点。\n周末可能有艺文活动；人多时不挤主舞台，沿湖走更舒服。',
-        gmap: 'Nam+Van+Lake+Macau'
+        detail: '日落后建筑暖灯更明显，约18:00后人也会逐渐少一些。\n不在牌坊正前方久占机位；从恋爱巷和右侧石阶看更有层次。',
+        gmap: 'Ruins+of+St+Paul+Macau',
+        xhsKeyword: '澳门 大三巴 夜晚 夜景'
       },
       {
-        name: '9A → 牧场街/台山', lat: 22.1798001, lng: 113.5367959,
-        type: 'transport', time: '19:40',
-        desc: '回旅游塔站乘9A往牧场街/青茂方向，至台山街市或牧场街下车。',
+        name: '大堂前地 / 大堂巷', lat: 22.1937229, lng: 113.5411481,
+        type: 'spot', time: '18:20',
+        desc: '从小广场走进大堂巷，暖黄街灯和旧楼立面是这段的核心。',
+        budget: '免费',
+        detail: '不进入议事亭前地主广场，直接从大堂斜巷／大堂巷走。\n广场和窄巷灯色偏暖，适合慢走拍照。',
+        gmap: 'Cathedral+Square+Macau',
+        xhsKeyword: '澳门 大堂前地 夜晚 暖黄'
+      },
+      {
+        name: '疯堂斜巷', lat: 22.1973272, lng: 113.5453660,
+        type: 'spot', time: '18:50',
+        desc: '从大堂一带步行约10分钟，进入望德堂的彩色葡式街巷。',
+        budget: '免费',
+        detail: '这里的葡式老屋、碎石路和欧式路灯最贴合“暖黄老街”。\n夜间是住宅区，部分岔巷偏暗；结伴、走主路，不要在楼梯和小巷深处停留太久。',
+        gmap: 'Calcada+de+Sao+Lazaro+Macau',
+        xhsKeyword: '澳门 疯堂斜巷 夜晚 暖黄'
+      },
+      {
+        name: '仁慈堂婆仔屋', lat: 22.1975268, lng: 113.5445730,
+        type: 'spot', time: '19:20',
+        desc: '黄色葡式院落与两棵老樟树，作为暖黄老街段的收尾。',
+        budget: '免费',
+        detail: '外观和庭院适合夜间慢走。\n这一带店铺会陆续关门，目标是看建筑和街灯，不安排进店消费。',
+        gmap: 'Albergue+SCM+Macau'
+      },
+      {
+        name: '塔石广场', lat: 22.1981161, lng: 113.5471340,
+        type: 'spot', time: '19:40',
+        desc: '从婆仔屋走到塔石广场，在灯光和安静街区中结束夜游。',
+        budget: '免费',
+        detail: '20:00前离开，保留体力回酒店。\n如果已经累了，可在婆仔屋直接结束，无需硬走到塔石。',
+        gmap: 'Tap+Seac+Square+Macau'
+      },
+      {
+        name: '9A → 台山／牧场街', lat: 22.1981161, lng: 113.5471340,
+        type: 'transport', time: '19:55',
+        desc: '步行到卢廉若公园附近，乘9A往青茂方向，在台山街市或牧场街下车。',
         budget: 'MOP 6',
-        detail: '车程约25–35分钟。到台山街市或牧场街后步行回酒店，约8–10分钟；到青茂则会多走一段。',
+        detail: '车程约25–35分钟。到台山街市或牧场街后步行回酒店约8–10分钟。',
         pay: { cash: 1, alipay: 0.5, wechat: 0.5 }
       },
       {
         name: '锦江之星 · 入住', lat: 22.21378, lng: 113.54545,
-        type: 'hotel', time: '20:15',
-        desc: '看完夜景再回酒店办入住。',
+        type: 'hotel', time: '20:35',
+        desc: '老城夜游结束后回酒店办入住。',
         detail: '如果你有大件行李且酒店不允许提前寄存，这一段才需要改成上午先放行李；小包出行可直接跳过。',
         gmap: 'Jinjiang+Inn+Border+Gate+Macau'
       },
@@ -575,17 +595,17 @@ function overviewContent() {
 <div class="section-head">行程概览</div>
 <div class="day-list">${DAYS.slice(1).map(d=>`<div class="card" onclick="go(${d.id})"><div class="name"><span class="dot" style="background:${d.color}"></span>${d.label} · ${d.title}</div><div class="desc">${d.date}</div></div>`).join('')}</div>
 <div class="section-head">路线逻辑</div>
-<div class="route-bar"><strong>D1</strong> 关闸 → 妈阁庙 → 郑家大屋 → 亚婆井前地 → 妈阁铭记 → 主教山 → 望德堂坊 → 雄兴泰 → 西湾湖／澳门塔夜景
+<div class="route-bar"><strong>D1</strong> 关闸 → 妈阁庙 → 郑家大屋 → 亚婆井前地 → 妈阁铭记 → 主教山 → 白鸽巢 → 雄兴泰 → 恋爱巷 → 大三巴夜灯 → 大堂前地 → 疯堂斜巷 → 婆仔屋 → 塔石
 <strong>D2</strong> 关闸 → Woop Woop 早午餐 → 氹仔旧城 → 路氹历史馆 → 龙环葡韵 → 雅憩午餐 → 圣堂／安德鲁 → 黑沙海滩 → 直返拱北</div>
 <div class="pay-summary">
   <h4>这次刻意改掉的贵餐</h4>
   原 A Lorcha＋Albergue 1601 已撤掉。D1 午餐改为妈阁铭记，晚餐提前到雄兴泰；D2 早餐／早午餐吃 Woop Woop，午餐恢复为雅憩。路环码头面馆保留为雅憩排队时的备选。
 </div>
-<div class="section-head">“澳门夜景”到底看什么</div>
+<div class="section-head">老城夜游怎么走</div>
 <div class="pay-summary">
-  <h4>你听说的多数是半岛“两湖一塔”</h4>
-  经典画面是西湾湖、南湾湖的灯影，加上澳门旅游塔和半岛楼群。免费玩法就是沿湖和旅游塔前地拍照；想上223米观光层则另买票，官方10:00–20:00，19:30停止入场。<br><br>
-  另一类是路氹金光大道的酒店灯光和大型综合体夜景。你上次已经去过威尼斯人和官也街，这次不重复，所以安排半岛南湾线。
+  <h4>恋爱巷 → 大三巴 → 大堂前地 → 疯堂斜巷 → 塔石</h4>
+  这段看的是石板路、旧楼立面、欧式路灯和暖黄街巷，不是湖面倒影或酒店灯海。恋爱巷和大三巴虽然上次去过，这次是专门看入夜灯光；之后避开议事亭前地，转入大堂与望德堂老城。<br><br>
+  疯堂斜巷晚上更安静，部分岔巷较暗。建议结伴、走主路，20:00前离开，不深入无灯台阶。
 </div>
 <div class="section-head">返程硬提醒</div>
 <div class="pay-summary">
