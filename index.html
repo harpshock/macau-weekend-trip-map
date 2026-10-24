@@ -132,6 +132,8 @@ a:hover { text-decoration: underline; }
 /* ── Card ── */
 .card { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 14px 16px; box-shadow: var(--shadow-sm); transition: box-shadow .25s ease; cursor: pointer; }
 .card:active { box-shadow: var(--shadow-md); }
+.card.done { opacity: .68; background: var(--bg-tertiary); }
+.card.is-now { box-shadow: 0 0 0 2px var(--accent), var(--shadow-md); }
 .card .time { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: .01em; }
 .card .name { font-size: 17px; font-weight: 600; margin: 2px 0 4px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 6px; }
 .card .desc { font-size: 14px; color: var(--text-secondary); line-height: 1.45; }
@@ -203,6 +205,13 @@ a:hover { text-decoration: underline; }
 }
 .details.closed { display: none; }
 
+.now-jump-note {
+  display: none; margin: 0 0 12px; padding: 10px 12px;
+  border-radius: var(--radius-sm); background: rgba(0,113,227,.08);
+  color: var(--accent); font-size: 13px; font-weight: 600;
+}
+.now-jump-note.show { display: block; }
+
 .guide-note {
   margin-top: 9px; padding: 10px 12px;
   background: #fff8e7; border-left: 3px solid #f2ad3d;
@@ -257,10 +266,34 @@ const DAYS = [
   {
     id: 1,
     label: 'D1',
+    isoDate: '2026-10-24',
     date: '10月24日 周六 · 13:00 午餐已结束',
     title: '澳门半岛南线 · 南段快游＋老城夜游',
     color: '#ff9500',
     locations: [
+      {
+        name: '澳门关闸', lat: 22.214667, lng: 113.548933,
+        type: 'transport', time: '10:30', done: true,
+        desc: '已完成：10:30过关，进入澳门。',
+        gmap: 'Portas+do+Cerco+Macau'
+      },
+      {
+        name: '关闸总站 → 妈阁', lat: 22.214667, lng: 113.548933,
+        type: 'transport', time: '11:00', done: true,
+        desc: '已完成：11:00上公交，前往妈阁。',
+        budget: 'MOP 6',
+        pay: { cash: 1, alipay: 0.5, wechat: 0.5 }
+      },
+      {
+        name: '妈阁铭记澳葡美食', lat: 22.1879861, lng: 113.5319069,
+        type: 'food', time: '13:00', done: true,
+        desc: '已完成：到关口后直接来这里，13:00吃完午饭。',
+        budget: '实际午餐',
+        xhs: 'https://www.xiaohongshu.com/explore/69f6230f000000001e00feac?xsec_token=ABzWTHsCo9rwtqiTVBgkrFWACcwSui4iSm4EsdF9Xap5k=',
+        xhsKeyword: '妈阁铭记澳葡美食',
+        dianpingKeyword: '妈阁铭记澳葡美食',
+        gmap: 'Ma+Kok+Meng+Kei+Macau'
+      },
       {
         name: '妈阁庙', lat: 22.1861086, lng: 113.5312671,
         type: 'spot', time: '13:10',
@@ -271,7 +304,7 @@ const DAYS = [
       },
       {
         name: '郑家大屋', lat: 22.1885873, lng: 113.5344127,
-        type: 'spot', time: '13:45',
+        type: 'spot', time: '13:40',
         desc: '大型岭南院落式宅邸，压缩为约30分钟。',
         budget: '免费',
         detail: '官方开放：10:00–18:00，17:30停止入场；逢周三休息，周六正常开。\n屋内有承载人数限制，周末不要带大件行李来。',
@@ -279,14 +312,14 @@ const DAYS = [
       },
       {
         name: '亚婆井前地', lat: 22.1883953, lng: 113.5350161,
-        type: 'spot', time: '14:20',
+        type: 'spot', time: '14:15',
         desc: '老榕树、葡式住宅与石仔路，拍照和歇脚约10分钟。',
         budget: '免费',
         gmap: 'Lilau+Square+Macau'
       },
       {
         name: '主教山小堂', lat: 22.1868468, lng: 113.5350286,
-        type: 'spot', time: '14:35',
+        type: 'spot', time: '14:30',
         desc: '从亚婆井上坡，教堂前平台看西湾；压缩为约25分钟。',
         budget: '免费',
         detail: '官方开放时间：10:00–17:00。\n这是白天最值得拍照的一段，和晚上南湾湖面视角不同，不要二选一。',
@@ -294,7 +327,7 @@ const DAYS = [
       },
       {
         name: '妈阁 → 白鸽巢', lat: 22.1861086, lng: 113.5312671,
-        type: 'transport', time: '15:05',
+        type: 'transport', time: '15:00',
         desc: '从妈阁总站乘 18 路往牧场街方向，至白鸽巢前地附近下车。',
         budget: 'MOP 6',
         detail: '18路往牧场街方向途经白鸽巢。\n上车前看车头，别坐反；若等车超过10分钟，可打车到白鸽巢公园。',
@@ -302,7 +335,7 @@ const DAYS = [
       },
       {
         name: '白鸽巢公园 / 东方基金会', lat: 22.2007550, lng: 113.5392153,
-        type: 'spot', time: '15:35',
+        type: 'spot', time: '15:30',
         desc: '在老树和葡式花园里慢走，作为饭后的低强度过渡。',
         budget: '免费',
         detail: '从白鸽巢前地下车即可进入公园，顺带看东方基金会会址外观。\n停留约30分钟，16:10前离开去恋爱巷。',
@@ -310,7 +343,7 @@ const DAYS = [
       },
       {
         name: '恋爱巷', lat: 22.1971608, lng: 113.5404425,
-        type: 'spot', time: '16:20',
+        type: 'spot', time: '16:15',
         desc: '从白鸽巢步行约10分钟，进入恋爱巷等待傍晚光线。',
         budget: '免费',
         detail: '恋爱巷很短，重点是黄、红、绿色旧建筑夹出的透视和大三巴侧影。\n先拍巷内，再看牌坊；不要站在车道中间。',
@@ -319,7 +352,7 @@ const DAYS = [
       },
       {
         name: '大三巴牌坊 · 黄昏到掌灯', lat: 22.1974570, lng: 113.5408602,
-        type: 'spot', time: '16:50',
+        type: 'spot', time: '16:40',
         desc: '留约一小时，从黄昏等到暖灯亮起，再离开。',
         budget: '免费',
         detail: '日落后建筑暖灯更明显，约17:50进入最适合拍照的时段。\n不在牌坊正前方久占机位；从恋爱巷和右侧石阶看更有层次。',
@@ -327,8 +360,20 @@ const DAYS = [
         xhsKeyword: '澳门 大三巴 夜晚 夜景'
       },
       {
+        name: '福隆新街 · 祥记面家', lat: 22.1948212, lng: 113.5374884,
+        type: 'food', time: '17:45',
+        desc: '走到红门青砖的福隆新街，在祥记吃一顿轻晚餐。',
+        budget: '约 MOP 50–80/人',
+        detail: '祥记营业至深夜，晚市正常开放。\n两人点虾子捞面＋云吞面，再分一份小菜即可；这一餐结束后再走回老城看灯。',
+        pay: { cash: 1, alipay: 0.5 },
+        xhs: 'https://www.xiaohongshu.com/explore/6a01e3710000000036032307?xsec_token=ABngansR6wlxQAuPaC0C1xzqn6HrjiAclCYDr3y4jO0Sw=',
+        xhsKeyword: '澳门 祥记面家 福隆新街',
+        dianpingKeyword: '祥记面家 福隆新街 澳门',
+        gmap: 'Cheong+Kei+Noodle+Rua+da+Felicidade+Macau'
+      },
+      {
         name: '大堂前地 / 大堂巷', lat: 22.1937229, lng: 113.5411481,
-        type: 'spot', time: '17:55',
+        type: 'spot', time: '18:30',
         desc: '从小广场走进大堂巷，暖黄街灯和旧楼立面是这段的核心。',
         budget: '免费',
         detail: '不进入议事亭前地主广场，直接从大堂斜巷／大堂巷走。\n广场和窄巷灯色偏暖，适合慢走拍照。',
@@ -337,7 +382,7 @@ const DAYS = [
       },
       {
         name: '疯堂斜巷', lat: 22.1973272, lng: 113.5453660,
-        type: 'spot', time: '18:20',
+        type: 'spot', time: '18:55',
         desc: '从大堂一带步行约10分钟，进入望德堂的彩色葡式街巷。',
         budget: '免费',
         detail: '这里的葡式老屋、碎石路和欧式路灯最贴合“暖黄老街”。\n夜间是住宅区，部分岔巷偏暗；结伴、走主路，不要在楼梯和小巷深处停留太久。',
@@ -346,44 +391,33 @@ const DAYS = [
       },
       {
         name: '仁慈堂婆仔屋', lat: 22.1975268, lng: 113.5445730,
-        type: 'spot', time: '18:50',
+        type: 'spot', time: '19:20',
         desc: '黄色葡式院落与两棵老樟树，作为暖黄老街段的收尾。',
         budget: '免费',
         detail: '外观和庭院适合夜间慢走。\n这一带店铺会陆续关门，目标是看建筑和街灯，不安排进店消费。',
         gmap: 'Albergue+SCM+Macau'
       },
       {
-        name: '福隆新街 · 祥记面家', lat: 22.1948212, lng: 113.5374884,
-        type: 'food', time: '19:20',
-        desc: '走到红门青砖的福隆新街，在祥记吃一顿轻晚餐。',
-        budget: '约 MOP 50–80/人',
-        detail: '祥记营业至深夜，适合作为这次晚一点的晚饭。\n两人点虾子捞面＋云吞面，再分一份小菜即可。福隆新街本身适合饭后慢走。',
-        pay: { cash: 1, alipay: 0.5 },
-        xhs: 'https://www.xiaohongshu.com/explore/6a01e3710000000036032307?xsec_token=ABngansR6wlxQAuPaC0C1xzqn6HrjiAclCYDr3y4jO0Sw=',
-        xhsKeyword: '澳门 祥记面家 福隆新街',
-        dianpingKeyword: '祥记面家 福隆新街 澳门',
-        gmap: 'Cheong+Kei+Noodle+Rua+da+Felicidade+Macau'
-      },
-      {
         name: '康公夜市 / 十月初五街', lat: 22.1968532, lng: 113.5376580,
-        type: 'spot', time: '20:05',
-        desc: '饭后沿福隆新街走到康公庙前地，看老城摊档暖灯。',
+        type: 'spot', time: '—',
+        desc: '可选：如果晚饭后还有精神，再到康公庙前地看夜市暖灯。',
         budget: '免费入场',
         detail: '康公夜市今日开放至22:00。\n从福隆新街上去约3分钟；只逛主街和康公庙前地，不再深入昏暗支巷。',
         xhsKeyword: '澳门 康公夜市 十月初五街',
         gmap: 'Largo+do+Pagode+do+Bazar+Macau'
       },
       {
-        name: '新马路/华侨 → 关闸', lat: 22.1943149, lng: 113.5376145,
-        type: 'transport', time: '20:40',
-        desc: '步行到新马路/华侨站，乘3或3X往关闸。',
+        name: '9A → 台山／牧场街', lat: 22.1975268, lng: 113.5445730,
+        type: 'transport', time: '19:45',
+        desc: '从婆仔屋走到卢廉若公园附近，乘9A往青茂方向，在台山／牧场街下车。',
         budget: 'MOP 6',
-        detail: '车程约25–35分钟。若夜市还没逛够，可延后到21:00，但不要错过酒店休息。',
-        pay: { cash: 1, alipay: 0.5, wechat: 0.5 }
+        detail: '车程约25–35分钟。若还想逛福隆夜市，可从婆仔屋向南走回新马路，改乘3或3X。',
+        pay: { cash: 1, alipay: 0.5, wechat: 0.5 },
+        gmap: 'Lu+Lian+Ruo+Garden+Macau'
       },
       {
         name: '锦江之星 · 入住', lat: 22.21378, lng: 113.54545,
-        type: 'hotel', time: '21:20',
+        type: 'hotel', time: '20:25',
         desc: '老城夜游结束后回酒店办入住。',
         detail: '如果你有大件行李且酒店不允许提前寄存，这一段才需要改成上午先放行李；小包出行可直接跳过。',
         gmap: 'Jinjiang+Inn+Border+Gate+Macau'
@@ -418,6 +452,7 @@ const DAYS = [
   {
     id: 2,
     label: 'D2',
+    isoDate: '2026-10-25',
     date: '10月25日 周日 · 19:00 拱北返深',
     title: 'Woop Woop — 氹仔旧城 — 路环 — 直返拱北',
     color: '#34c759',
@@ -564,6 +599,7 @@ const DAYS = [
 ];
 
 const PLAY_GUIDES = {
+  '澳门关闸': '已完成：10:30从关闸进入澳门，直接前往妈阁吃饭。',
   '关闸总站 → 妈阁': '先看车头方向，乘1或10路到妈阁总站。下车后不要急着过街，沿妈阁庙指示牌走约5分钟。',
   '妈阁庙': '先在前地拍完整山门，再进主殿；沿右侧石阶上弘仁殿看摩崖石刻，最后回到海边。上香跟现场动线，停留约30分钟。',
   '郑家大屋': '从正门进入后先看门厅与天井，再上主厅和后花园。重点看木雕、蚝壳窗与岭南院落层次，约35分钟。',
@@ -686,11 +722,11 @@ function overviewContent() {
 <div class="section-head">行程概览</div>
 <div class="day-list">${DAYS.slice(1).map(d=>`<div class="card" onclick="go(${d.id})"><div class="name"><span class="dot" style="background:${d.color}"></span>${d.label} · ${d.title}</div><div class="desc">${d.date}</div></div>`).join('')}</div>
 <div class="section-head">路线逻辑</div>
-<div class="route-bar"><strong>D1</strong> 妈阁铭记 → 妈阁庙 → 郑家大屋 → 亚婆井前地 → 主教山 → 白鸽巢 → 恋爱巷 → 大三巴夜灯 → 大堂前地 → 疯堂斜巷 → 婆仔屋 → 福隆新街晚餐 → 康公夜市
+<div class="route-bar"><strong>D1</strong> 已完成：澳门关闸 → 妈阁 → 妈阁铭记午餐｜接下来：妈阁庙 → 郑家大屋 → 亚婆井前地 → 主教山 → 白鸽巢 → 恋爱巷 → 大三巴夜灯 → 福隆新街晚餐 → 大堂前地 → 疯堂斜巷 → 婆仔屋
 <strong>D2</strong> 关闸 → Woop Woop 早午餐 → 氹仔旧城 → 路氹历史馆 → 龙环葡韵 → 雅憩午餐 → 圣堂／安德鲁 → 黑沙海滩 → 直返拱北</div>
 <div class="pay-summary">
   <h4>这次刻意改掉的贵餐</h4>
-  原 A Lorcha＋Albergue 1601 已撤掉。D1 已在妈阁铭记吃过午饭，晚餐顺势移到福隆新街的祥记面家；D2 早餐／早午餐吃 Woop Woop，午餐恢复为雅憩。路环码头面馆保留为雅憩排队时的备选。
+  原 A Lorcha＋Albergue 1601 已撤掉。D1 已把关闸和妈阁铭记记录补回，晚饭调整到17:45的福隆新街祥记面家；D2 早餐／早午餐吃 Woop Woop，午餐恢复为雅憩。路环码头面馆保留为雅憩排队时的备选。
 </div>
 <div class="section-head">老城夜游怎么走</div>
 <div class="pay-summary">
@@ -710,6 +746,10 @@ function overviewContent() {
 <div class="section-head">参考资料说明</div>
 <div class="pay-summary">
   手机点击“小红书帖子／搜索”会优先唤起小红书 App；若未安装或唤起失败，会自动回落网页。PC 端仍直接打开普通网页链接。
+</div>
+<div class="section-head">自动定位</div>
+<div class="pay-summary">
+  刷新页面后，会按澳门当地当前时间自动选择当天行程，并滚动高亮到下一站。已完成的关口、公交和午餐会保留在时间线中。
 </div>
 <div class="section-head">官方时间核对</div>
 <div class="pay-summary">
@@ -935,14 +975,14 @@ function locCard(loc, dayIdx) {
   if(loc.reserve) lnk += `<a href="${loc.reserve}" target="_blank" class="btn rsv">📅 预约</a>`;
   if(loc.official) lnk += `<a href="${loc.official}" target="_blank" class="btn ref">↗ 官方资料</a>`;
   const guideLabel = loc.type==='transport' ? '怎么走' : loc.type==='hotel' ? '住宿提示' : '怎么玩';
-  return `<div class="tl-item"><div class="tl-dot ${dot}"></div><div class="card" onclick="if(!event.target.closest('.btn,.links'))focusLoc('${uid}')"><div class="time">${loc.time!=='—'?loc.time:'备选'}</div><div class="name">${bdg} ${loc.name}</div><div class="desc">${loc.desc}</div>${loc.play?'<div class="guide-note"><strong>'+guideLabel+'</strong>'+loc.play+'</div>':''}${loc.budget?'<div class="budget">'+loc.budget+'</div>':''}${payChips(loc.pay)}<div class="links">${lnk}</div>${loc.detail?'<div class="details" id="'+uid+'">'+loc.detail.replace(/\n/g,'<br>')+'</div>':''}</div></div>`;
+  return `<div class="tl-item"><div class="tl-dot ${dot}"></div><div id="card-${uid}" class="card${loc.done?' done':''}" onclick="if(!event.target.closest('.btn,.links'))focusLoc('${uid}')"><div class="time">${loc.time!=='—'?loc.time:'备选'}</div><div class="name">${bdg} ${loc.name}${loc.done?' <span class="badge" style="background:rgba(52,199,89,.12);color:var(--tint-green)">已完成</span>':''}</div><div class="desc">${loc.desc}</div>${loc.play?'<div class="guide-note"><strong>'+guideLabel+'</strong>'+loc.play+'</div>':''}${loc.budget?'<div class="budget">'+loc.budget+'</div>':''}${payChips(loc.pay)}<div class="links">${lnk}</div>${loc.detail?'<div class="details" id="'+uid+'">'+loc.detail.replace(/\n/g,'<br>')+'</div>':''}</div></div>`;
 }
 
 function renderDay(idx) {
   const d = DAYS.find(x=>x.id===idx); if(!d) return '';
   const main = d.locations.filter(l=>l.time!=='—');
   const alt = d.locations.filter(l=>l.time==='—');
-  let h = `<div class="day-head"><h2>${d.title}</h2><p>${d.date}</p></div>`;
+  let h = `<div class="day-head"><h2>${d.title}</h2><p>${d.date}</p></div><div class="now-jump-note" id="now-jump-note"></div>`;
   if(main.length) { h += '<div class="section-head">行程</div><div class="timeline">'; main.forEach(l => h += locCard(l, idx)); h += '</div>'; }
   if(alt.length) { h += '<div class="section-head">备选</div><div class="timeline">'; alt.forEach(l => h += locCard(l, idx)); h += '</div>'; }
   return h;
@@ -961,7 +1001,7 @@ DAYS.forEach(d => {
   tabsEl.appendChild(btn);
 });
 
-function go(idx) {
+function go(idx, autoJump=false) {
   cur = idx;
   tabsEl.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.day===idx));
   contentEl.innerHTML = idx===0 ? overviewContent() : renderDay(idx);
@@ -969,6 +1009,7 @@ function go(idx) {
   contentEl.scrollTo({top:0});
   const tab = tabsEl.querySelector(`[data-day="${idx}"]`);
   if(tab) tab.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+  if(autoJump && idx !== 0) setTimeout(() => jumpToCurrentTime(idx), 220);
 }
 
 function toggle(id) { const el=document.getElementById(id); if(el) el.classList.toggle('closed'); }
@@ -984,8 +1025,64 @@ function focusLoc(uid) {
 
 tabsEl.addEventListener('click', e => { const t=e.target.closest('.tab'); if(t) go(+t.dataset.day); });
 
-const requestedDay = Number(new URLSearchParams(window.location.search).get('day') || 0);
-go(DAYS.some(d => d.id === requestedDay) ? requestedDay : 0);
+function currentMacauTime() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Macau', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  }).formatToParts(new Date()).reduce((acc, p) => { acc[p.type] = p.value; return acc; }, {});
+  return {
+    date: `${parts.year}-${parts.month}-${parts.day}`,
+    minutes: Number(parts.hour) * 60 + Number(parts.minute),
+    label: `${parts.hour}:${parts.minute}`
+  };
+}
+
+function dayForDate(date) {
+  const datedDays = DAYS.slice(1).filter(d => d.isoDate);
+  const exact = datedDays.find(d => d.isoDate === date);
+  if (exact) return exact.id;
+  const upcoming = datedDays.find(d => d.isoDate > date);
+  return upcoming ? upcoming.id : datedDays[datedDays.length - 1].id;
+}
+
+function jumpToCurrentTime(dayId) {
+  const day = DAYS.find(d => d.id === dayId);
+  if (!day || !day.isoDate) return;
+  const now = currentMacauTime();
+  const timed = day.locations.filter(l => /^\d{2}:\d{2}$/.test(l.time || ''));
+  if (!timed.length) return;
+
+  let target;
+  if (day.isoDate < now.date) target = timed[timed.length - 1];
+  else if (day.isoDate > now.date) target = timed[0];
+  else {
+    target = timed.find(l => {
+      const [h, m] = l.time.split(':').map(Number);
+      return h * 60 + m >= now.minutes - 10;
+    }) || timed[timed.length - 1];
+  }
+
+  const card = document.getElementById(`card-${target._uid}`);
+  const note = document.getElementById('now-jump-note');
+  if (note) {
+    note.textContent = `已按澳门当前时间 ${now.label} 自动定位到下一站：${target.name}`;
+    note.classList.add('show');
+  }
+  if (card) {
+    card.classList.add('is-now');
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+  }
+  const marker = markerByUid[target._uid];
+  if (marker) setTimeout(() => marker.openPopup(), 450);
+}
+
+const dayParam = new URLSearchParams(window.location.search).get('day');
+const requestedParam = dayParam === null || dayParam === '' ? NaN : Number(dayParam);
+const initialNow = currentMacauTime();
+const initialDay = Number.isFinite(requestedParam) && DAYS.some(d => d.id === requestedParam)
+  ? requestedParam
+  : dayForDate(initialNow.date);
+go(initialDay, true);
 
 /* ── Action Sheet for Navigation ── */
 const asOverlay = document.createElement('div');
