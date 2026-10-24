@@ -708,6 +708,10 @@ function overviewContent() {
 <div class="pay-summary">
  澳门公交通常 MOP 6/程，不设找零。准备约 MOP 60–80 硬币；支付宝/微信乘车码可能可用，但不要假设每辆车都能扫码。餐厅多数能收电子支付，熟食档和小店最好也备现金。
 </div>
+<div class="section-head">参考资料说明</div>
+<div class="pay-summary">
+  手机点击“小红书帖子／搜索”会优先唤起小红书 App；若未安装或唤起失败，会自动回落网页。PC 端仍直接打开普通网页链接。
+</div>
 <div class="section-head">官方时间核对</div>
 <div class="pay-summary">
   <a href="https://www.macaotourism.gov.mo/zh-hans/sightseeing/temples/a-ma-temple" target="_blank">妈阁庙 08:00–18:00</a><br>
@@ -807,8 +811,9 @@ function showDay(idx) {
   day.locations.forEach(l => {
     if(!l.lat) return;
     const m = L.marker([l.lat,l.lng], { icon: icon(day.color, emojis[l.type]||'📌') }).addTo(map);
-    const gmapQ = l.gmap||encodeURIComponent(l.name+' Tokyo');
-    m.bindPopup(`<b>${l.name}</b>${l.time!=='—'?'<br><span style="color:#86868b">'+l.time+'</span>':''}<br>${l.desc}${l.budget?'<br><span style="color:#ff9500">'+l.budget+'</span>':''}<br><a href="#" onclick="event.preventDefault();openAS('${l.name.replace(/'/g,"\\'")}',${l.lat},${l.lng},'${gmapQ}')">📍 导航</a>${l.xhs?' · <a href="'+l.xhs+'" target="_blank">📕 小红书</a>':''}`);
+    const gmapQ = l.gmap||encodeURIComponent(l.name+' Macau');
+    const locKey = `${idx}::${l.name}`;
+    m.bindPopup(`<b>${l.name}</b>${l.time!=='—'?'<br><span style="color:#86868b">'+l.time+'</span>':''}<br>${l.desc}${l.budget?'<br><span style="color:#ff9500">'+l.budget+'</span>':''}<br><a href="#" onclick="event.preventDefault();openAS('${l.name.replace(/'/g,"\\'")}',${l.lat},${l.lng},'${gmapQ}')">📍 导航</a>${(l.xhs||l.xhsKeyword)?' · <a href="#" onclick="event.preventDefault();return openXhs(\''+locKey.replace(/'/g,"\\'")+'\')">📕 小红书</a>':''}`);
     markers.push(m);
     markerByUid[l._uid] = m;
     if(l.time!=='—') coords.push([l.lat,l.lng]);
@@ -833,6 +838,7 @@ const IN_APP_WEBVIEW = (() => {
   const ua = (navigator.userAgent || '').toLowerCase();
   return /micromessenger|xhs|xhsdiscover|discover\/|tiktok|aweme|weibo|qq\/|qqbrowser|alipayclient|dingtalk|lark|feishu|ucbrowser|baiduboxapp|toutiao|newsarticle/.test(ua);
 })();
+const IS_MOBILE_DEVICE = /android|iphone|ipad|ipod|mobile|harmonyos/i.test(navigator.userAgent || '');
 
 function xhsKeyword(loc) {
   if(loc.xhsKeyword) return loc.xhsKeyword.trim();
@@ -840,6 +846,19 @@ function xhsKeyword(loc) {
 }
 function xhsAppUrl(loc) { return `xhsdiscover://search/result?keyword=${encodeURIComponent(xhsKeyword(loc))}&target_search=notes&source=deeplink`; }
 function xhsWebUrl(loc) { return `https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(xhsKeyword(loc))}&source=web_explore_feed`; }
+function xhsNoteAppUrl(loc) {
+  if(!loc.xhs) return xhsAppUrl(loc);
+  try {
+    const u = new URL(loc.xhs);
+    const match = u.pathname.match(/\/(?:explore|discovery\/item)\/([0-9a-zA-Z]+)/);
+    if(!match) return xhsAppUrl(loc);
+    const token = u.searchParams.get('xsec_token');
+    return `xhsdiscover://item/${match[1]}${token ? `?xsec_token=${encodeURIComponent(token)}&source=deeplink` : '?source=deeplink'}`;
+  } catch (_) {
+    return xhsAppUrl(loc);
+  }
+}
+function xhsLandingUrl(loc) { return loc.xhs || xhsWebUrl(loc); }
 
 function dpKeyword(loc) {
   if(loc.dianpingKeyword) return loc.dianpingKeyword.trim();
@@ -861,7 +880,38 @@ function openExt(key, kind) {
   }
   return false;
 }
-function openXhs(key) { return openExt(key, 'xhs'); }
+function openXhs(key) {
+  const loc = window._extLocs[key]; if(!loc) return false;
+  const webUrl = xhsLandingUrl(loc);
+
+  // PC keeps the normal web behavior.
+  if (!IS_MOBILE_DEVICE) {
+    window.open(webUrl, '_blank', 'noopener');
+    return false;
+  }
+
+  // Mobile: try the official Xiaohongshu app scheme first, then fall back to web.
+  let fallbackTimer = setTimeout(() => {
+    if (!document.hidden) window.location.href = webUrl;
+  }, 1200);
+  const clearFallback = () => {
+    if (document.hidden) clearTimeout(fallbackTimer);
+    document.removeEventListener('visibilitychange', clearFallback);
+  };
+  document.addEventListener('visibilitychange', clearFallback);
+  try {
+    const a = document.createElement('a');
+    a.href = loc.xhs ? xhsNoteAppUrl(loc) : xhsAppUrl(loc);
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => a.remove(), 500);
+  } catch (_) {
+    clearTimeout(fallbackTimer);
+    window.location.href = webUrl;
+  }
+  return false;
+}
 function openDp(key)  { return openExt(key, 'dp'); }
 
 function locCard(loc, dayIdx) {
@@ -871,11 +921,10 @@ function locCard(loc, dayIdx) {
   const locKey = `${dayIdx}::${loc.name}`;
   const gmapQ = loc.gmap||encodeURIComponent(loc.name+' Tokyo');
   let lnk = `<button class="btn nav" onclick="openAS('${loc.name.replace(/'/g,"\\'")}',${loc.lat},${loc.lng},'${gmapQ}')">📍 导航</button>`;
-  if(loc.xhs) {
-    lnk += `<a href="${loc.xhs}" target="_blank" class="btn xhs">📕 小红书帖子</a>`;
-  } else if(loc.xhsKeyword) {
-    const xhsHref = xhsWebUrl(loc);
-    lnk += `<a href="${xhsHref}" target="_blank" class="btn xhs">📕 小红书搜索</a>`;
+  if(loc.xhs || loc.xhsKeyword) {
+    const xhsHref = xhsLandingUrl(loc);
+    const xhsLabel = loc.xhs ? '📕 小红书帖子' : '📕 小红书搜索';
+    lnk += `<a href="${xhsHref}" target="_blank" onclick="return openXhs('${locKey.replace(/'/g,"\\'")}')" class="btn xhs">${xhsLabel}</a>`;
   }
   const dpEnabled = loc.dianping !== false &&
     (loc.dianping || loc.dianpingKeyword || loc.type==='food' || loc.type==='drink');
