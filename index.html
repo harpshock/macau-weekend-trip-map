@@ -267,8 +267,8 @@ const DAYS = [
     id: 1,
     label: 'D1',
     isoDate: '2026-10-24',
-    date: '10月24日 周六 · 13:00 午餐已结束',
-    title: '澳门半岛南线 · 南段快游＋老城夜游',
+    date: '10月24日 周六 · 当前在COTIZ南湾店',
+    title: '南湾周边慢游 · 18点开始老城夜游',
     color: '#ff9500',
     locations: [
       {
@@ -326,25 +326,53 @@ const DAYS = [
         gmap: 'Chapel+of+Our+Lady+of+Penha+Macau'
       },
       {
-        name: '妈阁 → 白鸽巢', lat: 22.1861086, lng: 113.5312671,
-        type: 'transport', time: '15:00',
-        desc: '从妈阁总站乘 18 路往牧场街方向，至白鸽巢前地附近下车。',
-        budget: 'MOP 6',
-        detail: '18路往牧场街方向途经白鸽巢。\n上车前看车头，别坐反；若等车超过10分钟，可打车到白鸽巢公园。',
-        pay: { cash: 1, alipay: 0.5, wechat: 0.5 }
+        name: 'COTIZ 南湾店', lat: 22.1911382, lng: 113.5391787,
+        type: 'drink', time: '16:15',
+        desc: '当前位置：南湾大马路343号，喝完咖啡后从这里开始慢走。',
+        budget: '已消费',
+        detail: '按南湾店规划。如果你实际在葡京人分店，请直接坐公交或打车去恋爱巷，南湾附近这段不适用。',
+        xhsKeyword: 'COTIZ 澳门 南湾',
+        dianpingKeyword: 'COTIZ 南湾 澳门',
+        official: 'https://www.macaotourism.gov.mo/zh-hans/dining/specialty-foods/coffee-shops-and-noodle-shops/cotiz-cafe-limited',
+        gmap: 'COTIZ+South+Bay+Macau'
       },
       {
-        name: '白鸽巢公园 / 东方基金会', lat: 22.2007550, lng: 113.5392153,
-        type: 'spot', time: '15:30',
-        desc: '在老树和葡式花园里慢走，作为饭后的低强度过渡。',
+        name: '岗顶前地 / 何东图书馆', lat: 22.1922736, lng: 113.5381607,
+        type: 'spot', time: '16:25',
+        desc: '从COTIZ步行约5分钟，看岗顶前地、何东图书馆和圣若瑟修院外观。',
         budget: '免费',
-        detail: '从白鸽巢前地下车即可进入公园，顺带看东方基金会会址外观。\n停留约30分钟，16:10前离开去恋爱巷。',
-        gmap: 'Camoes+Garden+Macau'
+        detail: '今天何东图书馆开放到20:00。\n先看波浪碎石路和岗顶建筑群，再进何东图书馆花园坐一会儿；圣若瑟圣堂如未开放只看外观。停留约35分钟。',
+        xhsKeyword: '澳门 岗顶前地 何东图书馆',
+        official: 'https://www.library.gov.mo/zh-hans/service-guide/opening-hours',
+        gmap: 'Largo+de+Santo+Agostinho+Macau'
+      },
+      {
+        name: '圣老楞佐堂', lat: 22.1906709, lng: 113.5367636,
+        type: 'spot', time: '17:05',
+        desc: '从岗顶走到风顺堂区，看巴洛克式教堂与前地。',
+        budget: '免费',
+        detail: '这里离南湾和岗顶都近，适合作为晚饭前最后一段。\n教堂内部若关闭，就看立面、前地和周边老宅，停留约15分钟。',
+        xhsKeyword: '澳门 圣老楞佐堂 风顺堂',
+        official: 'https://www.macaotourism.gov.mo/zh-hant/step-out-macao/central/st-lawrences-church',
+        gmap: 'St+Lawrence+Church+Macau'
+      },
+      {
+        name: '福隆新街 · 祥记面家', lat: 22.1948212, lng: 113.5374884,
+        type: 'food', time: '17:25',
+        desc: '从圣老楞佐堂步行约8分钟，在福隆新街提前吃晚饭。',
+        budget: '约 MOP 50–80/人',
+        detail: '祥记在福隆新街68号，适合快速吃一顿虾子捞面或云吞面。\n17:55前结束，沿红门绿窗老街走到恋爱巷约12分钟。',
+        pay: { cash: 1, alipay: 0.5 },
+        xhs: 'https://www.xiaohongshu.com/explore/6a01e3710000000036032307?xsec_token=ABngansR6wlxQAuPaC0C1xzqn6HrjiAclCYDr3y4jO0Sw=',
+        xhsKeyword: '澳门 祥记面家 福隆新街',
+        dianpingKeyword: '祥记面家 福隆新街 澳门',
+        official: 'https://www.new8spots.org.mo/spots_detail/8',
+        gmap: 'Cheong+Kei+Noodle+Rua+da+Felicidade+Macau'
       },
       {
         name: '恋爱巷', lat: 22.1971608, lng: 113.5404425,
-        type: 'spot', time: '16:15',
-        desc: '从白鸽巢步行约10分钟，进入恋爱巷等待傍晚光线。',
+        type: 'spot', time: '18:05',
+        desc: '晚饭后开始老城夜游，先进入恋爱巷。',
         budget: '免费',
         detail: '恋爱巷很短，重点是黄、红、绿色旧建筑夹出的透视和大三巴侧影。\n先拍巷内，再看牌坊；不要站在车道中间。',
         gmap: 'Travessa+da+Paixao+Macau',
@@ -352,7 +380,7 @@ const DAYS = [
       },
       {
         name: '大三巴牌坊 · 黄昏到掌灯', lat: 22.1974570, lng: 113.5408602,
-        type: 'spot', time: '16:40',
+        type: 'spot', time: '18:30',
         desc: '留约一小时，从黄昏等到暖灯亮起，再离开。',
         budget: '免费',
         detail: '日落后建筑暖灯更明显，约17:50进入最适合拍照的时段。\n不在牌坊正前方久占机位；从恋爱巷和右侧石阶看更有层次。',
@@ -360,20 +388,8 @@ const DAYS = [
         xhsKeyword: '澳门 大三巴 夜晚 夜景'
       },
       {
-        name: '福隆新街 · 祥记面家', lat: 22.1948212, lng: 113.5374884,
-        type: 'food', time: '17:45',
-        desc: '走到红门青砖的福隆新街，在祥记吃一顿轻晚餐。',
-        budget: '约 MOP 50–80/人',
-        detail: '祥记营业至深夜，晚市正常开放。\n两人点虾子捞面＋云吞面，再分一份小菜即可；这一餐结束后再走回老城看灯。',
-        pay: { cash: 1, alipay: 0.5 },
-        xhs: 'https://www.xiaohongshu.com/explore/6a01e3710000000036032307?xsec_token=ABngansR6wlxQAuPaC0C1xzqn6HrjiAclCYDr3y4jO0Sw=',
-        xhsKeyword: '澳门 祥记面家 福隆新街',
-        dianpingKeyword: '祥记面家 福隆新街 澳门',
-        gmap: 'Cheong+Kei+Noodle+Rua+da+Felicidade+Macau'
-      },
-      {
         name: '大堂前地 / 大堂巷', lat: 22.1937229, lng: 113.5411481,
-        type: 'spot', time: '18:30',
+        type: 'spot', time: '19:20',
         desc: '从小广场走进大堂巷，暖黄街灯和旧楼立面是这段的核心。',
         budget: '免费',
         detail: '不进入议事亭前地主广场，直接从大堂斜巷／大堂巷走。\n广场和窄巷灯色偏暖，适合慢走拍照。',
@@ -382,7 +398,7 @@ const DAYS = [
       },
       {
         name: '疯堂斜巷', lat: 22.1973272, lng: 113.5453660,
-        type: 'spot', time: '18:55',
+        type: 'spot', time: '19:45',
         desc: '从大堂一带步行约10分钟，进入望德堂的彩色葡式街巷。',
         budget: '免费',
         detail: '这里的葡式老屋、碎石路和欧式路灯最贴合“暖黄老街”。\n夜间是住宅区，部分岔巷偏暗；结伴、走主路，不要在楼梯和小巷深处停留太久。',
@@ -391,7 +407,7 @@ const DAYS = [
       },
       {
         name: '仁慈堂婆仔屋', lat: 22.1975268, lng: 113.5445730,
-        type: 'spot', time: '19:20',
+        type: 'spot', time: '20:10',
         desc: '黄色葡式院落与两棵老樟树，作为暖黄老街段的收尾。',
         budget: '免费',
         detail: '外观和庭院适合夜间慢走。\n这一带店铺会陆续关门，目标是看建筑和街灯，不安排进店消费。',
@@ -408,7 +424,7 @@ const DAYS = [
       },
       {
         name: '9A → 台山／牧场街', lat: 22.1975268, lng: 113.5445730,
-        type: 'transport', time: '19:45',
+        type: 'transport', time: '20:30',
         desc: '从婆仔屋走到卢廉若公园附近，乘9A往青茂方向，在台山／牧场街下车。',
         budget: 'MOP 6',
         detail: '车程约25–35分钟。若还想逛福隆夜市，可从婆仔屋向南走回新马路，改乘3或3X。',
@@ -417,7 +433,7 @@ const DAYS = [
       },
       {
         name: '锦江之星 · 入住', lat: 22.21378, lng: 113.54545,
-        type: 'hotel', time: '20:25',
+        type: 'hotel', time: '21:10',
         desc: '老城夜游结束后回酒店办入住。',
         detail: '如果你有大件行李且酒店不允许提前寄存，这一段才需要改成上午先放行李；小包出行可直接跳过。',
         gmap: 'Jinjiang+Inn+Border+Gate+Macau'
@@ -606,6 +622,9 @@ const PLAY_GUIDES = {
   '亚婆井前地': '绕广场走半圈，拍老榕树、葡式住宅和碎石路；坐两三分钟看居民出入即可，不必久留。',
   '妈阁铭记澳葡美食': '两个人建议一道主菜＋一份蔬菜＋白饭。第一次吃可点非洲鸡和蒜蓉焗鱼；想吃清淡就选焗骨饭或牛尾。',
   '主教山小堂': '从妈阁缓坡上山，先在教堂前平台看西湾，再进小堂。右侧路德圣母岩洞可顺带看，停留约30分钟。',
+  'COTIZ 南湾店': '在这里收尾咖啡和甜品。离开前确认随身物品，步行约5分钟进入岗顶前地。',
+  '岗顶前地 / 何东图书馆': '从波浪碎石路进入岗顶前地，绕一圈看圣奥斯定教堂、岗顶剧院和圣若瑟修院外观；再进何东图书馆花园或阅览室休息。',
+  '圣老楞佐堂': '先在外侧看巴洛克立面，再绕前地看周边老宅。内部开放就安静参观，关门就拍外景。',
   '妈阁 → 白鸽巢': '回妈阁总站乘18路往牧场街方向，到白鸽巢前地下车；若等车超过10分钟，直接打车更省时。',
   '白鸽巢公园 / 东方基金会': '从白鸽巢前地进入公园，绕老树和石景走一圈，再去看东方基金会会址外观。这里适合饭后放慢速度。',
   '妈阁 → 连胜／镜湖': '在妈阁总站确认18路车头写“牧场街”，到连胜／镜湖医院一带下车；若等车超过10分钟，可打车直奔雄兴泰。',
@@ -647,6 +666,9 @@ const XHS_SEARCH = {
   '郑家大屋': '澳门 郑家大屋',
   '亚婆井前地': '澳门 亚婆井前地',
   '主教山小堂': '澳门 主教山小堂',
+  'COTIZ 南湾店': 'COTIZ 澳门 南湾',
+  '岗顶前地 / 何东图书馆': '澳门 岗顶前地 何东图书馆',
+  '圣老楞佐堂': '澳门 圣老楞佐堂 风顺堂',
   '白鸽巢公园 / 东方基金会': '澳门 白鸽巢公园 夜景',
   '雄兴泰咖啡室': '雄兴泰咖啡室 连胜马路',
   '恋爱巷': '澳门 恋爱巷 夜晚',
@@ -722,16 +744,16 @@ function overviewContent() {
 <div class="section-head">行程概览</div>
 <div class="day-list">${DAYS.slice(1).map(d=>`<div class="card" onclick="go(${d.id})"><div class="name"><span class="dot" style="background:${d.color}"></span>${d.label} · ${d.title}</div><div class="desc">${d.date}</div></div>`).join('')}</div>
 <div class="section-head">路线逻辑</div>
-<div class="route-bar"><strong>D1</strong> 已完成：澳门关闸 → 妈阁 → 妈阁铭记午餐｜接下来：妈阁庙 → 郑家大屋 → 亚婆井前地 → 主教山 → 白鸽巢 → 恋爱巷 → 大三巴夜灯 → 福隆新街晚餐 → 大堂前地 → 疯堂斜巷 → 婆仔屋
+<div class="route-bar"><strong>D1</strong> 已完成：澳门关闸 → 妈阁 → 妈阁铭记午餐｜现在：COTIZ → 岗顶前地／何东图书馆 → 圣老楞佐堂 → 福隆新街晚餐 → 18:05恋爱巷 → 大三巴 → 大堂前地 → 疯堂斜巷 → 婆仔屋
 <strong>D2</strong> 关闸 → Woop Woop 早午餐 → 氹仔旧城 → 路氹历史馆 → 龙环葡韵 → 雅憩午餐 → 圣堂／安德鲁 → 黑沙海滩 → 直返拱北</div>
 <div class="pay-summary">
   <h4>这次刻意改掉的贵餐</h4>
-  原 A Lorcha＋Albergue 1601 已撤掉。D1 已把关闸和妈阁铭记记录补回，晚饭调整到17:45的福隆新街祥记面家；D2 早餐／早午餐吃 Woop Woop，午餐恢复为雅憩。路环码头面馆保留为雅憩排队时的备选。
+  原 A Lorcha＋Albergue 1601 已撤掉。D1 已把关闸和妈阁铭记记录补回；晚饭调整到17:25的福隆新街祥记面家，吃完再在18:05进入恋爱巷。D2 早餐／早午餐吃 Woop Woop，午餐恢复为雅憩。路环码头面馆保留为雅憩排队时的备选。
 </div>
 <div class="section-head">老城夜游怎么走</div>
 <div class="pay-summary">
-  <h4>恋爱巷 → 大三巴 → 大堂前地 → 疯堂斜巷 → 福隆新街</h4>
-  这段看的是石板路、旧楼立面、欧式路灯和暖黄街巷，不是湖面倒影或酒店灯海。恋爱巷和大三巴虽然上次去过，这次是专门看入夜灯光；之后避开议事亭前地，转入大堂与望德堂老城，最后到福隆新街吃晚饭。<br><br>
+  <h4>岗顶 → 圣老楞佐堂 → 福隆晚餐 → 恋爱巷 → 大三巴 → 疯堂斜巷</h4>
+  先用约一小时走COTIZ附近较安静的岗顶和风顺堂老街，17:25在福隆新街吃面，18:05再从恋爱巷进入夜游。恋爱巷和大三巴虽然上次去过，这次是专门看入夜灯光；之后避开议事亭前地，转入大堂与望德堂老城。<br><br>
   疯堂斜巷晚上更安静，部分岔巷较暗。建议结伴、走主路，20:00前离开，不深入无灯台阶。
 </div>
 <div class="section-head">返程硬提醒</div>
