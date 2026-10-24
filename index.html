@@ -165,6 +165,7 @@ a:hover { text-decoration: underline; }
 .btn.xhs    { background: #ff2442; color: #fff; }
 .btn.dp     { background: #ffa700; color: #fff; }
 .btn.rsv    { background: var(--tint-green); color: #fff; }
+.btn.ref    { background: var(--bg-grouped); color: var(--text-secondary); }
 
 /* Action Sheet */
 .as-overlay {
@@ -201,6 +202,17 @@ a:hover { text-decoration: underline; }
   font-size: 13px; color: var(--text-secondary); line-height: 1.6;
 }
 .details.closed { display: none; }
+
+.guide-note {
+  margin-top: 9px; padding: 10px 12px;
+  background: #fff8e7; border-left: 3px solid #f2ad3d;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: #6a5127; font-size: 13px; line-height: 1.55;
+}
+.guide-note strong {
+  display: block; margin-bottom: 2px;
+  color: #8a5b10; font-size: 11px; letter-spacing: .05em;
+}
 
 /* ── Overview day list ── */
 .day-list .card { margin-bottom: 8px; }
@@ -562,7 +574,102 @@ const DAYS = [
   }
 ];
 
-DAYS.forEach(d => d.locations.forEach((loc, i) => { loc._uid = `d${d.id}-${i}`; }));
+const PLAY_GUIDES = {
+  '关闸总站 → 妈阁': '先看车头方向，乘1或10路到妈阁总站。下车后不要急着过街，沿妈阁庙指示牌走约5分钟。',
+  '妈阁庙': '先在前地拍完整山门，再进主殿；沿右侧石阶上弘仁殿看摩崖石刻，最后回到海边。上香跟现场动线，停留约30分钟。',
+  '郑家大屋': '从正门进入后先看门厅与天井，再上主厅和后花园。重点看木雕、蚝壳窗与岭南院落层次，约35分钟。',
+  '亚婆井前地': '绕广场走半圈，拍老榕树、葡式住宅和碎石路；坐两三分钟看居民出入即可，不必久留。',
+  '妈阁铭记澳葡美食': '两个人建议一道主菜＋一份蔬菜＋白饭。第一次吃可点非洲鸡和蒜蓉焗鱼；想吃清淡就选焗骨饭或牛尾。',
+  '主教山小堂': '从妈阁缓坡上山，先在教堂前平台看西湾，再进小堂。右侧路德圣母岩洞可顺带看，停留约30分钟。',
+  '妈阁 → 连胜／镜湖': '在妈阁总站确认18路车头写“牧场街”，到连胜／镜湖医院一带下车；若等车超过10分钟，可打车直奔雄兴泰。',
+  '雄兴泰咖啡室': '每人点一碗鸡汤濑粉或面，再加一份鲮鱼饼／墨鱼饼分享。店里空间小，吃完就走，16:50前离开。',
+  '恋爱巷': '从巷口先拍大三巴的侧影，再向里走看黄、红、绿立面。夜间拍照用暖色模式，不要站在车道中间。',
+  '大三巴牌坊 · 黄昏到掌灯': '先在恋爱巷看侧影，再绕到牌坊正面。17:50左右掌灯后拍完整正面；右侧石阶适合拍人和牌坊同框。',
+  '大堂前地 / 大堂巷': '先绕小广场看主教座堂外观，再走进大堂巷看暖黄街灯。教堂关门也没关系，重点是广场与旧楼形成的灯影。',
+  '疯堂斜巷': '从大路缓慢上坡，看黄色葡式立面、碎石路和欧式路灯。只走主巷，不钻无灯楼梯；结伴更舒服。',
+  '仁慈堂婆仔屋': '在黄色院子看两棵老樟树和建筑外立面，不进餐厅也能参观。轻声慢走，留10–15分钟。',
+  '塔石广场': '走到广场边缘回望望德堂街区，拍一张收尾照。19:25前向卢廉若公园附近车站移动。',
+  '9A → 台山／牧场街': '在卢廉若公园附近上车，确认车头往青茂／牧场街。台山街市或牧场街下车，步行回酒店约8–10分钟。',
+  '锦江之星 · 入住': '到店直接办入住，把第二天要用的证件、现金和充电设备集中放好。',
+  '祐汉熟食中心': '先找座位再分头买。两人点煎饺、炸肠粉和一份糖水即可，很多主食分量偏大。',
+  '彩香园咖啡美食': '适合过关后快速补吃。点嚤啰鸡饭或猪扒包，饮品不必人人加；高峰时先看门口是否排队。',
+  '锦江之星 · 退房带行李出发': '退房时一次拿齐行李，按小箱或背包整理；关闸总站步行约3分钟。',
+  '关闸 → 氹仔旧城': '乘25路往路环市区方向，在T314信虹花园下车。步行从北帝庙一侧进入旧城，不绕官也街主街。',
+  'Woop Woop 巷弄咖啡': '两人点一份班尼迪蛋＋一份甜吐司或松饼，再各点一杯咖啡。坐窗边或户外，10:30前结账。',
+  '北帝庙与氹仔旧巷': '看庙门和香火后，从侧巷穿到历史馆。停留15分钟，不在官也街购物街反复折返。',
+  '路氹历史馆': '先看一楼历史时间线，再上楼看村落、行业和民俗展。现场若人多就只抓两层重点，30–35分钟。',
+  '龙环葡韵': '从最西侧的葡韵生活馆开始，沿五幢薄荷绿建筑一路拍到东端。周六活动人多时只逛两幢主馆。',
+  '龙环葡韵 → 路环市区': '走到海边马路T364站，乘26或26A。若因活动改站，跟现场临时站牌走，不要追车跑回官也街。',
+  '雅憩 Nga Tim': '先确认座位和等位时间。两人点非洲鸡＋一份海鲜或蔬菜＋饭；想多试菜就把主食减量。',
+  '路环码头面馆': '鱼翅花胶面与清汤牛腩面二选一，再加一份墨鱼扒分享。排队超过20分钟就值得优先考虑。',
+  '圣方济各圣堂': '先拍奶黄色教堂正面，再绕前地一圈，沿海边巷子走到码头。内部若在弥撒就不要打扰。',
+  '安德鲁饼店总店': '买1–2只刚出炉蛋挞站在门口吃，不排长队买整盒；酥皮带走久了会软。',
+  '26A → 黑沙海滩': '在路环市区站确认26A往黑沙海滩，过竹湾后继续坐，到黑沙海滩总站下车。',
+  '黑沙海滩 / 龙爪角短线': '从海滩入口走到龙爪角步道口，只取15–20分钟海景，不追完整2.15公里环线。',
+  '返程硬节点：26A → 25': '15:50上26A回路环市区，下车后找25路往关闸方向。16:05必须离开路环。',
+  '拱北口岸': '带行李直接离境，不再去酒店。17:00到关闸后立刻过关，目标17:50到珠海侧。',
+  '19:00 拱北返深大巴': '18:15前到上车点，先确认车牌、检票口和深圳落客点。周日不要临时找车。'
+};
+
+const XHS_SEARCH = {
+  '关闸总站 → 妈阁': '澳门 关闸 妈阁 公交',
+  '妈阁庙': '澳门 妈阁庙',
+  '郑家大屋': '澳门 郑家大屋',
+  '亚婆井前地': '澳门 亚婆井前地',
+  '主教山小堂': '澳门 主教山小堂',
+  '雄兴泰咖啡室': '雄兴泰咖啡室 连胜马路',
+  '恋爱巷': '澳门 恋爱巷 夜晚',
+  '大三巴牌坊 · 黄昏到掌灯': '澳门 大三巴 夜晚 夜景',
+  '大堂前地 / 大堂巷': '澳门 大堂前地 夜晚 暖黄',
+  '疯堂斜巷': '澳门 疯堂斜巷 夜晚',
+  '仁慈堂婆仔屋': '澳门 婆仔屋',
+  '塔石广场': '澳门 塔石广场 夜景',
+  '祐汉熟食中心': '祐汉小贩大楼熟食中心',
+  '彩香园咖啡美食': '彩香园咖啡美食 澳门',
+  'Woop Woop 巷弄咖啡': 'Woop Woop 巷弄 澳门',
+  '北帝庙与氹仔旧巷': '氹仔 北帝庙 旧城',
+  '路氹历史馆': '澳门 路氹历史馆',
+  '龙环葡韵': '澳门 龙环葡韵',
+  '雅憩 Nga Tim': '雅憩 路环 澳门',
+  '路环码头面馆': '路环码头面馆 澳门',
+  '圣方济各圣堂': '路环 圣方济各圣堂',
+  '安德鲁饼店总店': '安德鲁 蛋挞 路环',
+  '黑沙海滩 / 龙爪角短线': '澳门 黑沙海滩 龙爪角'
+};
+
+const OFFICIAL_LINKS = {
+  '妈阁庙': 'https://www.macaotourism.gov.mo/zh-hans/sightseeing/temples/a-ma-temple',
+  '郑家大屋': 'https://www.wh.mo/mandarinhouse/cn/visitInformation/',
+  '主教山小堂': 'https://www.macaotourism.gov.mo/zh-hans/sightseeing/churches/chapel-of-our-lady-of-penha',
+  '大堂前地 / 大堂巷': 'https://www.macaotourism.gov.mo/zh-hans/sightseeing/macao-world-heritage/cathedral-square',
+  '仁慈堂婆仔屋': 'https://www.macaotourism.gov.mo/en/shows-and-entertainment/cultural-and-creative-industries-zones/albergue-scm',
+  '锦江之星 · 入住': 'https://www.macaotourism.gov.mo/zh-hant/accommodation/jin-jiang-inn',
+  '锦江之星 · 退房带行李出发': 'https://www.macaotourism.gov.mo/zh-hant/accommodation/jin-jiang-inn',
+  'Woop Woop 巷弄咖啡': 'https://www.taipavillagemacau.com/directory/woopwoop/',
+  '路氹历史馆': 'https://www4.icm.gov.mo/cotaimuseum/cn/tour.html',
+  '龙环葡韵': 'https://www.icm.gov.mo/cn/housesmuseum/',
+  '雅憩 Nga Tim': 'https://www.macaotourism.gov.mo/en/dining/specialty-foods/specialty-restaurants/estabelecimento-de-comidas-nga-tim',
+  '路环码头面馆': 'https://www.macaotourism.gov.mo/zh-hans/dining/specialty-foods/coffee-shops-and-noodle-shops/estabelecimento-de-comidas-loja-de-sopa-de-fitas-de-cais-coloane',
+  '圣方济各圣堂': 'https://www.macaotourism.gov.mo/zh-hans/sightseeing/churches/chapel-of-st-francis-xavier',
+  '安德鲁饼店总店': 'https://www.lordstow.com/macau-outlets/',
+  '黑沙海滩 / 龙爪角短线': 'https://www.macaotourism.gov.mo/zh-hant/shows-and-entertainment/sports-and-recreation/trails'
+};
+
+const DIRECT_XHS = {
+  '恋爱巷': 'https://www.xiaohongshu.com/explore/6ab4d704000000000a01cd68?xsec_token=ABoTpGJp3b9KfV1u9FnL3wCvDwErYGYHhkk7MXCYuyyuY=',
+  '大三巴牌坊 · 黄昏到掌灯': 'https://www.xiaohongshu.com/explore/6ab4d704000000000a01cd68?xsec_token=ABoTpGJp3b9KfV1u9FnL3wCvDwErYGYHhkk7MXCYuyyuY=',
+  '大堂前地 / 大堂巷': 'https://www.xiaohongshu.com/explore/6ab4d704000000000a01cd68?xsec_token=ABoTpGJp3b9KfV1u9FnL3wCvDwErYGYHhkk7MXCYuyyuY=',
+  '疯堂斜巷': 'https://www.xiaohongshu.com/explore/6aa933310000000027017b51?xsec_token=ABgTxKM4rUeu3Xz3DCXSYosWlxplHfbRnEouXVcY52KiM=',
+  'Woop Woop 巷弄咖啡': 'https://www.xiaohongshu.com/explore/6a997f9c000000002600a5d5?xsec_token=ABTlLpi-8Ky35PsIJqBl4EHXDKn4cfYGt8ugaFWE03t3w='
+};
+
+DAYS.forEach(d => d.locations.forEach((loc, i) => {
+  loc._uid = `d${d.id}-${i}`;
+  if (!loc.play && PLAY_GUIDES[loc.name]) loc.play = PLAY_GUIDES[loc.name];
+  if (!loc.xhs && DIRECT_XHS[loc.name]) loc.xhs = DIRECT_XHS[loc.name];
+  if (!loc.xhs && !loc.xhsKeyword && XHS_SEARCH[loc.name]) loc.xhsKeyword = XHS_SEARCH[loc.name];
+  if (!loc.official && OFFICIAL_LINKS[loc.name]) loc.official = OFFICIAL_LINKS[loc.name];
+}));
 
 // ╔══════════════════════════════════════════════════════════════╗
 // ║  REPLACE THIS SECTION — Overview tab content                ║
@@ -764,10 +871,11 @@ function locCard(loc, dayIdx) {
   const locKey = `${dayIdx}::${loc.name}`;
   const gmapQ = loc.gmap||encodeURIComponent(loc.name+' Tokyo');
   let lnk = `<button class="btn nav" onclick="openAS('${loc.name.replace(/'/g,"\\'")}',${loc.lat},${loc.lng},'${gmapQ}')">📍 导航</button>`;
-  if(loc.xhs||loc.xhsKeyword) {
-    const xhsHref = IN_APP_WEBVIEW ? xhsWebUrl(loc) : xhsAppUrl(loc);
-    const xhsLabel = IN_APP_WEBVIEW ? '📕 小红书' : '📕 小红书 App';
-    lnk += `<a href="${xhsHref}" onclick="return openXhs('${locKey.replace(/'/g,"\\'")}')" class="btn xhs">${xhsLabel}</a>`;
+  if(loc.xhs) {
+    lnk += `<a href="${loc.xhs}" target="_blank" class="btn xhs">📕 小红书帖子</a>`;
+  } else if(loc.xhsKeyword) {
+    const xhsHref = xhsWebUrl(loc);
+    lnk += `<a href="${xhsHref}" target="_blank" class="btn xhs">📕 小红书搜索</a>`;
   }
   const dpEnabled = loc.dianping !== false &&
     (loc.dianping || loc.dianpingKeyword || loc.type==='food' || loc.type==='drink');
@@ -777,7 +885,9 @@ function locCard(loc, dayIdx) {
     lnk += `<a href="${dpHref}" onclick="return openDp('${locKey.replace(/'/g,"\\'")}')" class="btn dp">${dpLabel}</a>`;
   }
   if(loc.reserve) lnk += `<a href="${loc.reserve}" target="_blank" class="btn rsv">📅 预约</a>`;
-  return `<div class="tl-item"><div class="tl-dot ${dot}"></div><div class="card" onclick="if(!event.target.closest('.btn,.links'))focusLoc('${uid}')"><div class="time">${loc.time!=='—'?loc.time:'备选'}</div><div class="name">${bdg} ${loc.name}</div><div class="desc">${loc.desc}</div>${loc.budget?'<div class="budget">'+loc.budget+'</div>':''}${payChips(loc.pay)}<div class="links">${lnk}</div>${loc.detail?'<div class="details" id="'+uid+'">'+loc.detail.replace(/\n/g,'<br>')+'</div>':''}</div></div>`;
+  if(loc.official) lnk += `<a href="${loc.official}" target="_blank" class="btn ref">↗ 官方资料</a>`;
+  const guideLabel = loc.type==='transport' ? '怎么走' : loc.type==='hotel' ? '住宿提示' : '怎么玩';
+  return `<div class="tl-item"><div class="tl-dot ${dot}"></div><div class="card" onclick="if(!event.target.closest('.btn,.links'))focusLoc('${uid}')"><div class="time">${loc.time!=='—'?loc.time:'备选'}</div><div class="name">${bdg} ${loc.name}</div><div class="desc">${loc.desc}</div>${loc.play?'<div class="guide-note"><strong>'+guideLabel+'</strong>'+loc.play+'</div>':''}${loc.budget?'<div class="budget">'+loc.budget+'</div>':''}${payChips(loc.pay)}<div class="links">${lnk}</div>${loc.detail?'<div class="details" id="'+uid+'">'+loc.detail.replace(/\n/g,'<br>')+'</div>':''}</div></div>`;
 }
 
 function renderDay(idx) {
